@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MT940Parser", "MT940Parser\MT940Parser.csproj", "{BF89FDD4-1E84-4A5D-90EA-A2915D1A8969}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MT940ParserTests", "MT940ParserTests\MT940ParserTests.csproj", "{45806637-46D1-4FF1-9004-E94875C31789}"
+EndProject
+Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF89FDD4-1E84-4A5D-90EA-A2915D1A8969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF89FDD4-1E84-4A5D-90EA-A2915D1A8969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF89FDD4-1E84-4A5D-90EA-A2915D1A8969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF89FDD4-1E84-4A5D-90EA-A2915D1A8969}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45806637-46D1-4FF1-9004-E94875C31789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45806637-46D1-4FF1-9004-E94875C31789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45806637-46D1-4FF1-9004-E94875C31789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45806637-46D1-4FF1-9004-E94875C31789}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1D36344F-CC34-42E0-854D-090A207F2E2D}
+	EndGlobalSection
+EndGlobal
