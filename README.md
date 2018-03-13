@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/github/programmersdigest/MT940Parser?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/programmersdigest/MT940Parser?branch=master&svg=true)
 # MT940Parser
 A parser for the SWIFT MT940/MT942 format
 
