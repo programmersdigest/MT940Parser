@@ -15,6 +15,9 @@
     <RepositoryType>github</RepositoryType>
     <PackageTags>SWIFT MT940 MT942 Parser</PackageTags>
     <PackageIconUrl>https://raw.githubusercontent.com/programmersdigest/MT940Parser/master/Resources/Icon.png</PackageIconUrl>
+    <PackageId>programmersdigest.MT940Parser</PackageId>
+    <Product>programmersdigest.MT940Parser</Product>
+    <AssemblyName>programmersdigest.MT940Parser</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
