@@ -17,7 +17,8 @@
         public string SepaRemittanceInformation { get; internal set; }
         public string PayersReferenceParty { get; internal set; }
         public string CreditorsReferenceParty { get; internal set; }
-        
+        public string UnstructuredRemittanceInformation { get; internal set; }
+
         public bool IsUnstructuredData { get; internal set; }
         public string UnstructuredData { get; internal set; }
     }

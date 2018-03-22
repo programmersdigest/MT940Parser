@@ -38,7 +38,7 @@ namespace MT940ParserTests {
             Assert.IsTrue(information.IsUnstructuredData);
             Assert.AreEqual("This is unstructured data", information.UnstructuredData);
         }
-        
+
         [TestMethod]
         public void AdditionalInfoParser_ParseInformation_LongSeparatorFormat_ShouldParseAsUnstructuredData() {
             // Format uses separators in the for /ABCD/ where ABCD is a specific field code.
@@ -99,7 +99,7 @@ namespace MT940ParserTests {
         public void AdditionalInfoParser_ParseInformation_FieldCode00_ShouldParsePostingText() {
             var parser = new AdditionalInfoParser();
             var information = parser.ParseInformation("123?00Posting text");
-            
+
             Assert.AreEqual("Posting text", information.PostingText);
         }
 
@@ -167,17 +167,19 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidDataException))]
-        public void AdditionalInfoParser_ParseInformation_FieldCode20IsEmpty_ShouldThrowInvalidDataException() {
+        public void AdditionalInfoParser_ParseInformation_FieldCode20IsEmpty_ShouldParseAsUnstructuredRemittanceInformation() {
             var parser = new AdditionalInfoParser();
-            parser.ParseInformation("123?20");
+            var information = parser.ParseInformation("123?20");
+
+            Assert.AreEqual("", information.UnstructuredRemittanceInformation);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidDataException))]
-        public void AdditionalInfoParser_ParseInformation_FieldCode20UnknownIdentifier_ShouldThrowInvalidDataException() {
+        public void AdditionalInfoParser_ParseInformation_FieldCode20UnknownIdentifier_ShouldParseAsUnstructuredRemittanceInformation() {
             var parser = new AdditionalInfoParser();
-            parser.ParseInformation("123?20ABCD+");
+            var information = parser.ParseInformation("123?20ABCD+");
+
+            Assert.AreEqual("ABCD+", information.UnstructuredRemittanceInformation);
         }
 
         [TestMethod]
@@ -307,7 +309,7 @@ namespace MT940ParserTests {
 
             Assert.AreEqual("Sepa remittance\r\ninformation", information.SepaRemittanceInformation);
         }
-        
+
         [TestMethod]
         public void AdditionalInfoParser_ParseInformation_FieldCode20SVWZ_MultiPart_ShouldAddNewlineForEachNewField() {
             var parser = new AdditionalInfoParser();
