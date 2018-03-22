@@ -154,13 +154,16 @@ namespace programmersdigest.MT940Parser.Parsing {
         private void ReadRemittanceInformation(ref Information information) {
             var value = _reader.Read(5);
             if (!DetectRemittanceIdentifier(value, ref information)) {
-                // Could not detect identifier. Try to append to last one.
-                if (_lastRemittanceIdentifier == null) {
-                    throw new InvalidDataException($"Unexpected data. Expected remittance information identifier. Found \"{value}\"");
-                }
-
                 _reader.Skip(-value.Length);   // Revert read
-                DetectRemittanceIdentifier(_lastRemittanceIdentifier, ref information);
+
+                // Could not detect identifier. Try to append to last one.
+                if (_lastRemittanceIdentifier != null) {
+                    DetectRemittanceIdentifier(_lastRemittanceIdentifier, ref information);
+                }
+                else {
+                    // There is no last remittance identifier, regard as unstructured data.
+                    information.UnstructuredRemittanceInformation += ReadValue();
+                }
             }
         }
 
