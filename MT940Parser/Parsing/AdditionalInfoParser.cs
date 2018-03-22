@@ -164,7 +164,7 @@ namespace programmersdigest.MT940Parser.Parsing {
                 }
                 else {
                     // There is no last remittance identifier, regard as unstructured data.
-                    information.UnstructuredRemittanceInformation += ReadValue();
+                    information.UnstructuredRemittanceInformation += ReadValue() + "\r\n";        // Add newline to make remittance information more readable;
                 }
             }
         }
