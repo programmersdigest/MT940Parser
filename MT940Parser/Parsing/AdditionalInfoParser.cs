@@ -12,11 +12,11 @@ namespace programmersdigest.MT940Parser.Parsing {
             if (value == null) {
                 throw new ArgumentNullException(nameof(value), "Value may not be null");
             }
-            
+
             _reader = new StringReader(value);
             _separator = default(char);
             _lastRemittanceIdentifier = null;
-            
+
             var information = new Information();
 
             DetectFormat(ref information);
@@ -164,7 +164,11 @@ namespace programmersdigest.MT940Parser.Parsing {
                 }
                 else {
                     // There is no last remittance identifier, regard as unstructured data.
-                    information.UnstructuredRemittanceInformation += ReadValue() + "\r\n";        // Add newline to make remittance information more readable;
+                    if (!string.IsNullOrEmpty(information.UnstructuredRemittanceInformation)) {
+                        information.UnstructuredRemittanceInformation += "\r\n";        // Add newline to make remittance information more readable
+                    }
+
+                    information.UnstructuredRemittanceInformation += ReadValue();
                 }
             }
         }
