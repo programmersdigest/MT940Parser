@@ -175,11 +175,19 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void AdditionalInfoParser_ParseInformation_FieldCode20UnknownIdentifier_ShouldParseAsUnstructuredRemittanceInformation() {
+        public void AdditionalInfoParser_ParseInformation_FieldCode20UnknownIdentifier_ShouldParseUnstructuredRemittanceInformation() {
             var parser = new AdditionalInfoParser();
             var information = parser.ParseInformation("123?20ABCD+");
 
             Assert.AreEqual("ABCD+", information.UnstructuredRemittanceInformation);
+        }
+
+        [TestMethod]
+        public void AdditionalInfoParser_ParseInformation_FieldCode20UnknownIdentifier_MultiPart_ShouldParseUnstructuredRemittanceInformation() {
+            var parser = new AdditionalInfoParser();
+            var information = parser.ParseInformation("123?20First line?21Second line");
+
+            Assert.AreEqual("First line\r\nSecond line", information.UnstructuredRemittanceInformation);
         }
 
         [TestMethod]
