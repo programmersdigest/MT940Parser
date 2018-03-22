@@ -349,5 +349,15 @@ namespace MT940ParserTests {
 
             Assert.AreEqual("Creditors reference party", information.CreditorsReferenceParty);
         }
+
+        [TestMethod]
+        public void AdditionalInfoParser_ParseInformation_UnstructuredRemittanceInformationAfterStructuredRemittanceInformation_ShouldNotRetainLastRemittanceIdentifier() {
+            var parser = new AdditionalInfoParser();
+            parser.ParseInformation("123?20ABWE+Creditors reference?21 party");
+
+            var information = parser.ParseInformation("123?20Unstructured Data");
+            Assert.AreNotEqual("Unstructured Data", information.CreditorsReferenceParty);
+            Assert.AreEqual("Unstructured Data", information.UnstructuredRemittanceInformation);
+        }
     }
 }

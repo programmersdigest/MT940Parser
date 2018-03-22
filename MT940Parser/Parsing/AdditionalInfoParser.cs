@@ -14,7 +14,9 @@ namespace programmersdigest.MT940Parser.Parsing {
             }
             
             _reader = new StringReader(value);
-
+            _separator = default(char);
+            _lastRemittanceIdentifier = null;
+            
             var information = new Information();
 
             DetectFormat(ref information);
