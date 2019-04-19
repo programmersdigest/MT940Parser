@@ -16,7 +16,7 @@ This project implements a parser for the *SWIFT MT940* and *MT942* formats used 
 - Is largely unit tested (200+ tests)
 
 ## Usage
-Grab the latest version from NuGet https://www.nuget.org/packages/MT940Parser
+Grab the latest version from NuGet https://www.nuget.org/packages/programmersdigest.MT940Parser
 
 ```
 // Just provide a file path...
@@ -36,10 +36,8 @@ using (var parser = new Parser(networkStream)) {
 
 ## Todos
 - Parse special fields used in MT942 only (i.E. :34F:, :13D:, :90D:, :90C:)
-- Parse structured data in field :86:
 - Provide Transaction Type ID Code (in field :61:) as enum
 - Store parsing errors in each statement so that subsequent statements can still be processed
-- Further standard compliancy (e.g. character set check)
 - Add comments on public members
 
 ## Relevant Materials

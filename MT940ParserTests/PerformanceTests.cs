@@ -4,11 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace MT940ParserTests {
+namespace MT940ParserTests
+{
     [TestClass]
-    public class PerformanceTests {
+    public class PerformanceTests
+    {
         [TestMethod]
-        public void Parser_Parse100000Statements() {
+        public void Parser_Parse100000Statements()
+        {
             Assert.Inconclusive("Please uncomment this line to run the performance test.");
 
             var stopwatch = new Stopwatch();
@@ -55,9 +58,12 @@ namespace MT940ParserTests {
 
             var count = 0;
 
-            using (var stream = new MemoryStream()) {
-                using (var writer = new StreamWriter(stream, Encoding.ASCII, 1024, true)) {
-                    for (int i = 0; i < 100000; i++) {
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new StreamWriter(stream, Encoding.ASCII, 1024, true))
+                {
+                    for (int i = 0; i < 100000; i++)
+                    {
                         writer.Write(text);
                     }
                 }
@@ -66,7 +72,8 @@ namespace MT940ParserTests {
                 var parser = new Parser(stream);
 
                 stopwatch.Start();
-                foreach(var statement in parser.Parse()) {
+                foreach (var statement in parser.Parse())
+                {
                     count++;
                 }
                 stopwatch.Stop();
