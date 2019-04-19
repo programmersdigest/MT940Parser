@@ -5,8 +5,9 @@ using System.IO;
 
 namespace programmersdigest.MT940Parser.Parsing {
     public class StatementLineParser {
+        private static readonly HashSet<string> _validTransactionTypes = new HashSet<string> { "F", "N", "S" };
+
         private StringReader _reader;
-        private readonly List<string> _validTransactionTypes = new List<string>{"N","S","F"};
 
         public StatementLine ReadStatementLine(string buffer) {
             _reader = new StringReader(buffer);

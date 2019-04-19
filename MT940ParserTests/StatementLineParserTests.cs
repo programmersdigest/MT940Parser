@@ -180,7 +180,17 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementLineParser_TransactionTypeIsValid_ShouldParse() {
+        public void StatementLineParser_TransactionType_F_ShouldParse()
+        {
+            var text = "1801011231CR12,34FABCNONREF//Bank Reference\r\nSupplementary Details";
+
+            var line = _parser.ReadStatementLine(text);
+
+            Assert.AreEqual("ABC", line.TransactionTypeIdCode);
+        }
+
+        [TestMethod]
+        public void StatementLineParser_TransactionType_N_ShouldParse() {
             var text = "1801011231CR12,34NMSCNONREF//Bank Reference\r\nSupplementary Details";
 
             var line = _parser.ReadStatementLine(text);
@@ -189,12 +199,13 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementLineParser_TransactionTypeIsValid2_ShouldParse() {
-            var text = "1801011231CR12,34NABCNONREF//Bank Reference\r\nSupplementary Details";
+        public void StatementLineParser_TransactionType_S_ShouldParse()
+        {
+            var text = "1801011231CR12,34SXYZNONREF//Bank Reference\r\nSupplementary Details";
 
             var line = _parser.ReadStatementLine(text);
 
-            Assert.AreEqual("ABC", line.TransactionTypeIdCode);
+            Assert.AreEqual("XYZ", line.TransactionTypeIdCode);
         }
 
         [TestMethod]
@@ -427,6 +438,38 @@ namespace MT940ParserTests {
         [ExpectedException(typeof(InvalidDataException))]
         public void StatementLineParser_SupplementaryDetailsTooLong_ShouldThrowInvalidDataException() {
             var text = "1801011231CR12,34ABCDCustomer Ref//Bank Ref\r\n12345678901234567890123456789012345";
+
+            _parser.ReadStatementLine(text);
+        }
+
+        [DataTestMethod]
+        [DataRow('A')]
+        [DataRow('B')]
+        [DataRow('C')]
+        [DataRow('D')]
+        [DataRow('E')]
+        [DataRow('G')]
+        [DataRow('H')]
+        [DataRow('I')]
+        [DataRow('J')]
+        [DataRow('K')]
+        [DataRow('L')]
+        [DataRow('M')]
+        [DataRow('O')]
+        [DataRow('P')]
+        [DataRow('Q')]
+        [DataRow('R')]
+        [DataRow('T')]
+        [DataRow('U')]
+        [DataRow('V')]
+        [DataRow('W')]
+        [DataRow('X')]
+        [DataRow('Y')]
+        [DataRow('Z')]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void StatementLineParser_TransactionTypeInvalid_ShouldThrowInvalidDataException(char transactionType)
+        {
+            var text = "1801011231CR12,34" + transactionType + "MSCNONREF//Bank Reference\r\nSupplementary Details";
 
             _parser.ReadStatementLine(text);
         }
