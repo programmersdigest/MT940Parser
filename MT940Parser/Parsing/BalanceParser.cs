@@ -2,14 +2,18 @@
 using System.Globalization;
 using System.IO;
 
-namespace programmersdigest.MT940Parser.Parsing {
-    public class BalanceParser {
+namespace programmersdigest.MT940Parser.Parsing
+{
+    public class BalanceParser
+    {
         private StringReader _reader;
 
-        public Balance ReadBalance(string buffer, BalanceType type) {
+        public Balance ReadBalance(string buffer, BalanceType type)
+        {
             _reader = new StringReader(buffer);
 
-            var balance = new Balance {
+            var balance = new Balance
+            {
                 Type = type
             };
 
@@ -18,13 +22,16 @@ namespace programmersdigest.MT940Parser.Parsing {
             return balance;
         }
 
-        private void ReadDebitCreditMark(ref Balance balance) {
+        private void ReadDebitCreditMark(ref Balance balance)
+        {
             var value = _reader.Read(1);
-            if (value.Length < 1) {
+            if (value.Length < 1)
+            {
                 throw new InvalidDataException("The balance data ended unexpectedly. Expected credit debit field.");
             }
 
-            switch (value) {
+            switch (value)
+            {
                 case "C":
                     balance.Mark = DebitCreditMark.Credit;
                     break;
@@ -38,9 +45,11 @@ namespace programmersdigest.MT940Parser.Parsing {
             ReadStatementDate(ref balance);
         }
 
-        private void ReadStatementDate(ref Balance balance) {
+        private void ReadStatementDate(ref Balance balance)
+        {
             var value = _reader.ReadWhile(char.IsDigit, 6);
-            if (value.Length < 6) {
+            if (value.Length < 6)
+            {
                 throw new InvalidDataException("The balance data ended unexpectedly. Expected value Date with a length of six characters.");
             }
 
@@ -49,9 +58,11 @@ namespace programmersdigest.MT940Parser.Parsing {
             ReadCurrency(ref balance);
         }
 
-        private void ReadCurrency(ref Balance balance) {
+        private void ReadCurrency(ref Balance balance)
+        {
             var value = _reader.ReadWhile(c => char.IsLetter(c) && char.IsUpper(c), 3);
-            if (value.Length < 3) {
+            if (value.Length < 3)
+            {
                 throw new InvalidDataException("The balance data ended unexpectedly. Expected value Currency with three uppercase letters.");
             }
 
@@ -60,13 +71,16 @@ namespace programmersdigest.MT940Parser.Parsing {
             ReadAmount(ref balance);
         }
 
-        private void ReadAmount(ref Balance balance) {
+        private void ReadAmount(ref Balance balance)
+        {
             var value = _reader.Read(15);
-            if (value.Length <= 0) {
+            if (value.Length <= 0)
+            {
                 throw new InvalidDataException("The balance data ended unexpectedly. Expected value Amount with a length of at least 1 decimal.");
             }
 
-            if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("de"), out var amount)) {
+            if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("de"), out var amount))
+            {
                 throw new FormatException($"Cannot convert value to Decimal: {value}");
             }
 

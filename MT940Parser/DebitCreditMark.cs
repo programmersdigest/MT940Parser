@@ -1,5 +1,7 @@
-﻿namespace programmersdigest.MT940Parser {
-    public enum DebitCreditMark {
+﻿namespace programmersdigest.MT940Parser
+{
+    public enum DebitCreditMark
+    {
         Credit,
         Debit,
         ReverseCredit,

@@ -1,19 +1,24 @@
 ﻿using System;
 
-namespace programmersdigest.MT940Parser.Parsing {
-    internal class StringReader {
+namespace programmersdigest.MT940Parser.Parsing
+{
+    internal class StringReader
+    {
         private string _buffer;
         private int _position;
 
-        public StringReader(string buffer) {
-            if (buffer == null) {
+        public StringReader(string buffer)
+        {
+            if (buffer == null)
+            {
                 throw new ArgumentNullException(nameof(buffer));
             }
 
             _buffer = buffer;
         }
 
-        public string Read(int length = 0) {
+        public string Read(int length = 0)
+        {
             var result = Peek(length);
 
             _position += result.Length;
@@ -21,12 +26,15 @@ namespace programmersdigest.MT940Parser.Parsing {
             return result;
         }
 
-        public string ReadWhile(Func<char, bool> predicate, int length = 0) {
-            if (predicate == null) {
+        public string ReadWhile(Func<char, bool> predicate, int length = 0)
+        {
+            if (predicate == null)
+            {
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            if (length < 0) {
+            if (length < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(length), "Length must be greater than or equal to zero.");
             }
 
@@ -36,12 +44,15 @@ namespace programmersdigest.MT940Parser.Parsing {
                     ? start + length
                     : _buffer.Length;
 
-            if (end > _buffer.Length) {
+            if (end > _buffer.Length)
+            {
                 end = _buffer.Length;
             }
 
-            for (var i = start; i < end; i++) {
-                if (!predicate(_buffer[i])) {
+            for (var i = start; i < end; i++)
+            {
+                if (!predicate(_buffer[i]))
+                {
                     end = i;
                     break;
                 }
@@ -52,8 +63,10 @@ namespace programmersdigest.MT940Parser.Parsing {
             return _buffer.Substring(start, take);
         }
 
-        public string Peek(int length = 0) {
-            if (length < 0) {
+        public string Peek(int length = 0)
+        {
+            if (length < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(length), "Length must be greater than or equal to zero.");
             }
 
@@ -63,14 +76,16 @@ namespace programmersdigest.MT940Parser.Parsing {
                     ? start + length
                     : _buffer.Length;
 
-            if (end > _buffer.Length) {
+            if (end > _buffer.Length)
+            {
                 end = _buffer.Length;
             }
-            
+
             return _buffer.Substring(start, end - start);
         }
 
-        public void Skip(int length) {
+        public void Skip(int length)
+        {
             var newPosition = _position + length;
             if (newPosition < 0)
                 _position = 0;

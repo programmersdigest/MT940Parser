@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Linq;
 
-namespace programmersdigest.MT940Parser.Parsing {
-    public static class DateParser {
-        public static DateTime Parse(string date) {
-            if (date == null) {
+namespace programmersdigest.MT940Parser.Parsing
+{
+    public static class DateParser
+    {
+        public static DateTime Parse(string date)
+        {
+            if (date == null)
+            {
                 throw new ArgumentNullException(nameof(date), "Date must not be null");
             }
-            if (date.Length != 6) {
+            if (date.Length != 6)
+            {
                 throw new FormatException("Date has to be given in the form yyMMdd");
             }
-            if (!date.All(char.IsNumber)) {
+            if (!date.All(char.IsNumber))
+            {
                 throw new FormatException("Date must only contain numbers 0-9");
             }
 
@@ -18,10 +24,12 @@ namespace programmersdigest.MT940Parser.Parsing {
             var month = int.Parse(date.Substring(2, 2));
             var day = int.Parse(date.Substring(4, 2));
 
-            if (year > 79) {
+            if (year > 79)
+            {
                 year += 1900;
             }
-            else {
+            else
+            {
                 year += 2000;
             }
 

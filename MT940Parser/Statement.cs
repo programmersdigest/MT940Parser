@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace programmersdigest.MT940Parser {
-    public class Statement {
+namespace programmersdigest.MT940Parser
+{
+    public class Statement
+    {
         public string TransactionReferenceNumber { get; internal set; }
         public string RelatedReference { get; internal set; }
         public string AccountIdentification { get; internal set; }

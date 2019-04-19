@@ -5,17 +5,21 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace MT940ParserTests {
+namespace MT940ParserTests
+{
     [TestClass]
-    public class ParserTests {
+    public class ParserTests
+    {
         #region Input checks
 
         [TestMethod]
-        public void Parser_InputIsEmpty_ShouldReturnZeroStatements() {
+        public void Parser_InputIsEmpty_ShouldReturnZeroStatements()
+        {
             var text = "";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var parser = new Parser(stream)) {
+            using (var parser = new Parser(stream))
+            {
                 var statements = parser.Parse();
 
                 Assert.AreEqual(0, statements.Count());
@@ -23,11 +27,13 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void Parser_InputIsNonsensical_ShouldReturnZeroStatements() {
+        public void Parser_InputIsNonsensical_ShouldReturnZeroStatements()
+        {
             var text = "32u1mbß61zßv";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var parser = new Parser(stream)) {
+            using (var parser = new Parser(stream))
+            {
                 var statements = parser.Parse();
 
                 Assert.AreEqual(0, statements.Count());
@@ -36,28 +42,34 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Parser_StreamIsNull_ShouldThrowArgumentNullException() {
+        public void Parser_StreamIsNull_ShouldThrowArgumentNullException()
+        {
             Stream stream = null;
 
-            using (var parser = new Parser(stream)) {
+            using (var parser = new Parser(stream))
+            {
             }
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Parser_PathIsNull_ShouldThrowArgumentNullException() {
+        public void Parser_PathIsNull_ShouldThrowArgumentNullException()
+        {
             string path = null;
 
-            using (var parser = new Parser(path)) {
+            using (var parser = new Parser(path))
+            {
             }
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Parser_PathIsEmpty_ShouldThrowArgumentNullException() {
+        public void Parser_PathIsEmpty_ShouldThrowArgumentNullException()
+        {
             var path = "";
 
-            using (var parser = new Parser(path)) {
+            using (var parser = new Parser(path))
+            {
             }
         }
 
@@ -66,7 +78,8 @@ namespace MT940ParserTests {
         #region Positive results
 
         [TestMethod]
-        public void Parser_SingleStatement_ShouldParse() {
+        public void Parser_SingleStatement_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -87,7 +100,8 @@ namespace MT940ParserTests {
                 "-\r\n";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var parser = new Parser(stream)) {
+            using (var parser = new Parser(stream))
+            {
                 var statements = parser.Parse();
 
                 Assert.AreEqual(1, statements.Count());
@@ -95,7 +109,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void Parser_MultipleStatements_ShouldParse() {
+        public void Parser_MultipleStatements_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -116,8 +131,9 @@ namespace MT940ParserTests {
                 "-\r\n";
             text = string.Concat(text, text, text, text, text);     // Generate five statement.
 
-            using(var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var parser = new Parser(stream)) {
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
+            using (var parser = new Parser(stream))
+            {
                 var statements = parser.Parse();
 
                 Assert.AreEqual(5, statements.Count());

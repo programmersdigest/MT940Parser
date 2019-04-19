@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace programmersdigest.MT940Parser {
-    public class StatementLine {
+namespace programmersdigest.MT940Parser
+{
+    public class StatementLine
+    {
         public DateTime? ValueDate { get; internal set; }
         public DateTime? EntryDate { get; internal set; }
         public DebitCreditMark Mark { get; internal set; }

@@ -1,5 +1,7 @@
-﻿namespace programmersdigest.MT940Parser {
-    public class Information {
+﻿namespace programmersdigest.MT940Parser
+{
+    public class Information
+    {
         public int TransactionCode { get; internal set; }
         public string PostingText { get; internal set; }
         public string JournalNumber { get; internal set; }

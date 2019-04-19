@@ -3,20 +3,23 @@ using programmersdigest.MT940Parser;
 using programmersdigest.MT940Parser.Parsing;
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 
-namespace MT940ParserTests {
+namespace MT940ParserTests
+{
     [TestClass]
-    public class StatementParserTests {
+    public class StatementParserTests
+    {
         #region Input checks
 
         [TestMethod]
-        public void StatementParser_InputIsEmpty_ShouldReturnNull() {
+        public void StatementParser_InputIsEmpty_ShouldReturnNull()
+        {
             var text = "";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -25,11 +28,13 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_InputIsNonsensical_ShouldReturnNull() {
+        public void StatementParser_InputIsNonsensical_ShouldReturnNull()
+        {
             var text = "32u1mbﬂ61zﬂv";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -39,7 +44,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void StatementParser_ReaderIsNull_ShouldThrowArgumentNullException() {
+        public void StatementParser_ReaderIsNull_ShouldThrowArgumentNullException()
+        {
             StreamReader reader = null;
             var parser = new StatementParser(reader);
         }
@@ -49,7 +55,8 @@ namespace MT940ParserTests {
         #region Mandatory and optional fields
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParse() {
+        public void StatementParser_SingleCompleteStatement_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -70,7 +77,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -79,7 +87,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_MissingStartingField20_ShouldParseNothing() {
+        public void StatementParser_MissingStartingField20_ShouldParseNothing()
+        {
             var text =
                 ":21:Related Ref\r\n" +
                 ":25:1234567890/1234567890\r\n" +
@@ -99,7 +108,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -108,7 +118,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_MissingOptionalField21_ShouldParse() {
+        public void StatementParser_MissingOptionalField21_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":25:1234567890/1234567890\r\n" +
@@ -128,7 +139,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -138,7 +150,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(InvalidDataException))]
-        public void StatementParser_MissingMandatoryField25_ShouldThrowInvalidDataException() {
+        public void StatementParser_MissingMandatoryField25_ShouldThrowInvalidDataException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -158,15 +171,17 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
         }
-        
+
         [TestMethod]
         [ExpectedException(typeof(InvalidDataException))]
-        public void StatementParser_MissingMandatoryField28C_ShouldThrowInvalidDataException() {
+        public void StatementParser_MissingMandatoryField28C_ShouldThrowInvalidDataException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -186,14 +201,16 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
         }
 
         [TestMethod]
-        public void StatementParser_MissingOptionalSecondPartInField28C_ShouldParse() {
+        public void StatementParser_MissingOptionalSecondPartInField28C_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -214,7 +231,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -224,7 +242,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(InvalidDataException))]
-        public void StatementParser_MissingMandatoryField60a_ShouldThrowInvalidDataException() {
+        public void StatementParser_MissingMandatoryField60a_ShouldThrowInvalidDataException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -244,7 +263,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
@@ -252,7 +272,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(InvalidDataException))]
-        public void StatementParser_MissingField61Before86_ShouldThrowInvalidDataException() {
+        public void StatementParser_MissingField61Before86_ShouldThrowInvalidDataException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -269,7 +290,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -278,7 +300,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_MissingOptionalField61And86_ShouldParse() {
+        public void StatementParser_MissingOptionalField61And86_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -293,7 +316,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -302,7 +326,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_MissingOptionalField86_ShouldParse() {
+        public void StatementParser_MissingOptionalField86_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -321,121 +346,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
-                var parser = new StatementParser(reader);
-                var statement = parser.ReadStatement();
-
-                Assert.IsNotNull(statement);
-            }
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidDataException))]
-        public void StatementParser_MissingMandatoryField62a_ShouldThrowInvalidDataException() {
-            var text = "\r\n" +
-                ":20:Transaction Ref\r\n" +
-                ":21:Related Ref\r\n" +
-                ":25:1234567890/1234567890\r\n" +
-                ":28C:12345/12345\r\n" +
-                ":60F:C180220EUR0,00\r\n" +
-                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
-                "Supplementary Details\r\n" +
-                ":86:Information\r\n" +
-                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
-                "Supplementary Details\r\n" +
-                ":86:Information\r\n" +
-                ":64:C180220EUR0,00\r\n" +
-                ":65:C180220EUR0,00\r\n" +
-                ":65:C180220EUR0,00\r\n" +
-                ":86:Information\r\n" +
-                "-";
-
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
-                var parser = new StatementParser(reader);
-                var statement = parser.ReadStatement();
-            }
-        }
-
-        [TestMethod]
-        public void StatementParser_MissingOptionalField64_ShouldParse() {
-            var text = "\r\n" +
-                ":20:Transaction Ref\r\n" +
-                ":21:Related Ref\r\n" +
-                ":25:1234567890/1234567890\r\n" +
-                ":28C:12345/12345\r\n" +
-                ":60F:C180220EUR0,00\r\n" +
-                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
-                "Supplementary Details\r\n" +
-                ":86:Information\r\n" +
-                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
-                "Supplementary Details\r\n" +
-                ":86:Information\r\n" +
-                ":62F:C180220EUR0,00\r\n" +
-                ":65:C180220EUR0,00\r\n" +
-                ":65:C180220EUR0,00\r\n" +
-                ":86:Information\r\n" +
-                "-";
-
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
-                var parser = new StatementParser(reader);
-                var statement = parser.ReadStatement();
-
-                Assert.IsNotNull(statement);
-            }
-        }
-
-        [TestMethod]
-        public void StatementParser_MissingOptionalField65_ShouldParse() {
-            var text = "\r\n" +
-                ":20:Transaction Ref\r\n" +
-                ":21:Related Ref\r\n" +
-                ":25:1234567890/1234567890\r\n" +
-                ":28C:12345/12345\r\n" +
-                ":60F:C180220EUR0,00\r\n" +
-                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
-                "Supplementary Details\r\n" +
-                ":86:Information\r\n" +
-                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
-                "Supplementary Details\r\n" +
-                ":86:Information\r\n" +
-                ":62F:C180220EUR0,00\r\n" +
-                ":64:C180220EUR0,00\r\n" +
-                ":86:Information\r\n" +
-                "-";
-
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
-                var parser = new StatementParser(reader);
-                var statement = parser.ReadStatement();
-
-                Assert.IsNotNull(statement);
-            }
-        }
-
-        [TestMethod]
-        public void StatementParser_MissingOptionalField86AtEndOfStatement_ShouldParse() {
-            var text = "\r\n" +
-                ":20:Transaction Ref\r\n" +
-                ":21:Related Ref\r\n" +
-                ":25:1234567890/1234567890\r\n" +
-                ":28C:12345/12345\r\n" +
-                ":60F:C180220EUR0,00\r\n" +
-                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
-                "Supplementary Details\r\n" +
-                ":86:Information\r\n" +
-                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
-                "Supplementary Details\r\n" +
-                ":86:Information\r\n" +
-                ":62F:C180220EUR0,00\r\n" +
-                ":64:C180220EUR0,00\r\n" +
-                ":65:C180220EUR0,00\r\n" +
-                ":65:C180220EUR0,00\r\n" +
-                "-";
-
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -445,7 +357,130 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(InvalidDataException))]
-        public void StatementParser_MissingEndOfStatement_ShouldThrowInvalidDataException() {
+        public void StatementParser_MissingMandatoryField62a_ShouldThrowInvalidDataException()
+        {
+            var text = "\r\n" +
+                ":20:Transaction Ref\r\n" +
+                ":21:Related Ref\r\n" +
+                ":25:1234567890/1234567890\r\n" +
+                ":28C:12345/12345\r\n" +
+                ":60F:C180220EUR0,00\r\n" +
+                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
+                "Supplementary Details\r\n" +
+                ":86:Information\r\n" +
+                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
+                "Supplementary Details\r\n" +
+                ":86:Information\r\n" +
+                ":64:C180220EUR0,00\r\n" +
+                ":65:C180220EUR0,00\r\n" +
+                ":65:C180220EUR0,00\r\n" +
+                ":86:Information\r\n" +
+                "-";
+
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
+            using (var reader = new StreamReader(stream))
+            {
+                var parser = new StatementParser(reader);
+                var statement = parser.ReadStatement();
+            }
+        }
+
+        [TestMethod]
+        public void StatementParser_MissingOptionalField64_ShouldParse()
+        {
+            var text = "\r\n" +
+                ":20:Transaction Ref\r\n" +
+                ":21:Related Ref\r\n" +
+                ":25:1234567890/1234567890\r\n" +
+                ":28C:12345/12345\r\n" +
+                ":60F:C180220EUR0,00\r\n" +
+                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
+                "Supplementary Details\r\n" +
+                ":86:Information\r\n" +
+                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
+                "Supplementary Details\r\n" +
+                ":86:Information\r\n" +
+                ":62F:C180220EUR0,00\r\n" +
+                ":65:C180220EUR0,00\r\n" +
+                ":65:C180220EUR0,00\r\n" +
+                ":86:Information\r\n" +
+                "-";
+
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
+            using (var reader = new StreamReader(stream))
+            {
+                var parser = new StatementParser(reader);
+                var statement = parser.ReadStatement();
+
+                Assert.IsNotNull(statement);
+            }
+        }
+
+        [TestMethod]
+        public void StatementParser_MissingOptionalField65_ShouldParse()
+        {
+            var text = "\r\n" +
+                ":20:Transaction Ref\r\n" +
+                ":21:Related Ref\r\n" +
+                ":25:1234567890/1234567890\r\n" +
+                ":28C:12345/12345\r\n" +
+                ":60F:C180220EUR0,00\r\n" +
+                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
+                "Supplementary Details\r\n" +
+                ":86:Information\r\n" +
+                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
+                "Supplementary Details\r\n" +
+                ":86:Information\r\n" +
+                ":62F:C180220EUR0,00\r\n" +
+                ":64:C180220EUR0,00\r\n" +
+                ":86:Information\r\n" +
+                "-";
+
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
+            using (var reader = new StreamReader(stream))
+            {
+                var parser = new StatementParser(reader);
+                var statement = parser.ReadStatement();
+
+                Assert.IsNotNull(statement);
+            }
+        }
+
+        [TestMethod]
+        public void StatementParser_MissingOptionalField86AtEndOfStatement_ShouldParse()
+        {
+            var text = "\r\n" +
+                ":20:Transaction Ref\r\n" +
+                ":21:Related Ref\r\n" +
+                ":25:1234567890/1234567890\r\n" +
+                ":28C:12345/12345\r\n" +
+                ":60F:C180220EUR0,00\r\n" +
+                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
+                "Supplementary Details\r\n" +
+                ":86:Information\r\n" +
+                ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
+                "Supplementary Details\r\n" +
+                ":86:Information\r\n" +
+                ":62F:C180220EUR0,00\r\n" +
+                ":64:C180220EUR0,00\r\n" +
+                ":65:C180220EUR0,00\r\n" +
+                ":65:C180220EUR0,00\r\n" +
+                "-";
+
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
+            using (var reader = new StreamReader(stream))
+            {
+                var parser = new StatementParser(reader);
+                var statement = parser.ReadStatement();
+
+                Assert.IsNotNull(statement);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void StatementParser_MissingEndOfStatement_ShouldThrowInvalidDataException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -465,7 +500,8 @@ namespace MT940ParserTests {
                 ":86:Information";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
@@ -476,7 +512,8 @@ namespace MT940ParserTests {
         #region Field length
 
         [TestMethod]
-        public void StatementParser_Field20TooLong_ShouldParse() {
+        public void StatementParser_Field20TooLong_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:" + new string('x', 16 + 1) + "\r\n" +
                 ":21:Related Ref\r\n" +
@@ -497,7 +534,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -506,7 +544,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field21TooLong_ShouldParse() {
+        public void StatementParser_Field21TooLong_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:" + new string('x', 16 + 1) + "\r\n" +
@@ -527,7 +566,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -536,7 +576,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field25TooLong_ShouldParse() {
+        public void StatementParser_Field25TooLong_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -557,7 +598,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -566,7 +608,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field28CFirstPartTooLong_ShouldParse() {
+        public void StatementParser_Field28CFirstPartTooLong_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -587,7 +630,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -596,7 +640,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field28CSecondPartTooLong_ShouldParse() {
+        public void StatementParser_Field28CSecondPartTooLong_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -617,7 +662,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -626,7 +672,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field86InLineTooLong_ShouldParse() {
+        public void StatementParser_Field86InLineTooLong_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -647,7 +694,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -656,7 +704,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field86InLineTooManyLines_ShouldParse() {
+        public void StatementParser_Field86InLineTooManyLines_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -683,7 +732,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -698,9 +748,10 @@ namespace MT940ParserTests {
                     statement.Lines[0].InformationToOwner.UnstructuredData);
             }
         }
-        
+
         [TestMethod]
-        public void StatementParser_Field86AtEndOfStatementTooLong_ShouldParse() {
+        public void StatementParser_Field86AtEndOfStatementTooLong_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -709,7 +760,7 @@ namespace MT940ParserTests {
                 ":60F:C180220EUR0,00\r\n" +
                 ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
                 "Supplementary Details\r\n" +
-                ":86:Information\r\n" + 
+                ":86:Information\r\n" +
                 ":61:1802200220CR0,00NMSCCustomer Ref//Bank Ref\r\n" +
                 "Supplementary Details\r\n" +
                 ":86:Information\r\n" +
@@ -721,16 +772,18 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
                 Assert.AreEqual(new string('x', 6 * 65 + 1), statement.InformationToOwner.UnstructuredData);
             }
         }
-        
+
         [TestMethod]
-        public void StatementParser_Field86AtEndOfStatentTooManyLines_ShouldParse() {
+        public void StatementParser_Field86AtEndOfStatentTooManyLines_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -757,7 +810,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -778,7 +832,8 @@ namespace MT940ParserTests {
         #region Empty fields
 
         [TestMethod]
-        public void StatementParser_Field20IsEmpty_ShouldParse() {
+        public void StatementParser_Field20IsEmpty_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:\r\n" +
                 ":21:Related Ref\r\n" +
@@ -799,7 +854,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -808,7 +864,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field21IsEmpty_ShouldParse() {
+        public void StatementParser_Field21IsEmpty_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:\r\n" +
@@ -829,7 +886,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -838,7 +896,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field25IsEmpty_ShouldParse() {
+        public void StatementParser_Field25IsEmpty_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -859,7 +918,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -869,7 +929,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void StatementParser_Field28Part1IsEmpty_ShouldThrowFormatException() {
+        public void StatementParser_Field28Part1IsEmpty_ShouldThrowFormatException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -890,7 +951,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
@@ -898,7 +960,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void StatementParser_Field28Part2IsEmpty_ShouldThrowFormatException() {
+        public void StatementParser_Field28Part2IsEmpty_ShouldThrowFormatException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -919,14 +982,16 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
         }
 
         [TestMethod]
-        public void StatementParser_Field86InLineIsEmpty_ShouldParse() {
+        public void StatementParser_Field86InLineIsEmpty_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -947,7 +1012,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -956,7 +1022,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field86AtEndOfStatementIsEmpty_ShouldParse() {
+        public void StatementParser_Field86AtEndOfStatementIsEmpty_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -977,7 +1044,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -990,7 +1058,8 @@ namespace MT940ParserTests {
         #region Basic positive result checks
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField20() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField20()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1011,7 +1080,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1020,7 +1090,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField21() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField21()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1041,7 +1112,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1050,7 +1122,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField25() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField25()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1071,16 +1144,18 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
                 Assert.AreEqual("1234567890/0987654321", statement.AccountIdentification);
             }
         }
-        
+
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField28CPart1() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField28CPart1()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1101,7 +1176,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1110,7 +1186,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField28CPart2() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField28CPart2()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1131,16 +1208,18 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
                 Assert.AreEqual(54321, statement.SequenceNumber);
             }
         }
-        
+
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField60F() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField60F()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1161,7 +1240,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1170,7 +1250,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField60M() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField60M()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1191,7 +1272,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1200,7 +1282,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField60FAsOpeningBalance() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField60FAsOpeningBalance()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1221,7 +1304,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1230,7 +1314,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField60MAsIntermediateBalance() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField60MAsIntermediateBalance()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1251,16 +1336,18 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
                 Assert.AreEqual(BalanceType.Intermediate, statement.OpeningBalance.Type);
             }
         }
-        
+
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField61() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField61()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1281,7 +1368,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1290,7 +1378,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField61InOrder() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField61InOrder()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1311,7 +1400,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1321,7 +1411,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField86InLine() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField86InLine()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1342,7 +1433,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1352,7 +1444,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField62F() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField62F()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1373,7 +1466,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1382,7 +1476,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField62M() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField62M()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1403,7 +1498,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1412,7 +1508,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField62FAsOpeningBalance() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField62FAsOpeningBalance()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1433,7 +1530,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1442,7 +1540,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField62MAsIntermediateBalance() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField62MAsIntermediateBalance()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1463,7 +1562,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1472,7 +1572,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField64() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField64()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1493,7 +1594,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1502,7 +1604,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField65() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField65()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1523,7 +1626,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1532,7 +1636,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField65InOrder() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField65InOrder()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1553,7 +1658,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1563,7 +1669,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_SingleCompleteStatement_ShouldParseField86AtEndOfStatement() {
+        public void StatementParser_SingleCompleteStatement_ShouldParseField86AtEndOfStatement()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1584,16 +1691,18 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
                 Assert.AreEqual("Statement Information", statement.InformationToOwner.UnstructuredData);
             }
         }
-        
+
         [TestMethod]
-        public void StatementParser_MultipleStatements_ShouldParseOneStatementAfterTheOther() {
+        public void StatementParser_MultipleStatements_ShouldParseOneStatementAfterTheOther()
+        {
             var text = "\r\n" +
                 ":20:Statement 1\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1618,7 +1727,8 @@ namespace MT940ParserTests {
                    text.Replace("Statement 1", "Statement 3");
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
 
                 var statement1 = parser.ReadStatement();
@@ -1637,7 +1747,8 @@ namespace MT940ParserTests {
         #region Whitespace and specific data types
 
         [TestMethod]
-        public void StatementParser_Field20OnlyWhitespace_ShouldParseWhitespace() {
+        public void StatementParser_Field20OnlyWhitespace_ShouldParseWhitespace()
+        {
             var text = "\r\n" +
                 ":20:  \t\t  \r\n" +
                 ":21:Related Ref\r\n" +
@@ -1658,7 +1769,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1667,7 +1779,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field21OnlyWhitespace_ShouldParseWhitespace() {
+        public void StatementParser_Field21OnlyWhitespace_ShouldParseWhitespace()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:  \t\t  \r\n" +
@@ -1688,7 +1801,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1697,7 +1811,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_Field25OnlyWhitespace_ShouldParseWhitespace() {
+        public void StatementParser_Field25OnlyWhitespace_ShouldParseWhitespace()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1718,17 +1833,19 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
                 Assert.AreEqual("  \t\t  ", statement.AccountIdentification);
             }
         }
-        
+
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void StatementParser_Field28CPart1OnlyWhitespace_ShouldThrowFormatException() {
+        public void StatementParser_Field28CPart1OnlyWhitespace_ShouldThrowFormatException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1749,7 +1866,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
@@ -1757,7 +1875,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void StatementParser_Field28CPart1NonNumeric_ShouldThrowFormatException() {
+        public void StatementParser_Field28CPart1NonNumeric_ShouldThrowFormatException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1778,7 +1897,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
@@ -1786,7 +1906,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void StatementParser_Field28CPart1DecimalSeparator_ShouldThrowFormatException() {
+        public void StatementParser_Field28CPart1DecimalSeparator_ShouldThrowFormatException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1807,7 +1928,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
@@ -1815,7 +1937,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void StatementParser_Field28CPart2OnlyWhitespace_ShouldThrowFormatException() {
+        public void StatementParser_Field28CPart2OnlyWhitespace_ShouldThrowFormatException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1836,7 +1959,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
@@ -1844,7 +1968,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void StatementParser_Field28CPart2NonNumeric_ShouldThrowFormatException() {
+        public void StatementParser_Field28CPart2NonNumeric_ShouldThrowFormatException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1865,7 +1990,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
@@ -1873,7 +1999,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]
-        public void StatementParser_Field28CPart2DecimalSeparator_ShouldThrowFormatException() {
+        public void StatementParser_Field28CPart2DecimalSeparator_ShouldThrowFormatException()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1894,14 +2021,16 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
             }
         }
 
         [TestMethod]
-        public void StatementParser_Field86InLineOnlyWhitespace_ShouldParseWhitespace() {
+        public void StatementParser_Field86InLineOnlyWhitespace_ShouldParseWhitespace()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1922,7 +2051,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1931,7 +2061,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_EndOfStatementAfterField62a_ShouldParse() {
+        public void StatementParser_EndOfStatementAfterField62a_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1948,7 +2079,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1957,7 +2089,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_EndOfStatementAfterField64_ShouldParse() {
+        public void StatementParser_EndOfStatementAfterField64_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -1975,7 +2108,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -1984,7 +2118,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_EndOfStatementAfterField65_ShouldParse() {
+        public void StatementParser_EndOfStatementAfterField65_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -2004,7 +2139,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 
@@ -2013,7 +2149,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StatementParser_EndOfStatementAfterField86_ShouldParse() {
+        public void StatementParser_EndOfStatementAfterField86_ShouldParse()
+        {
             var text = "\r\n" +
                 ":20:Transaction Ref\r\n" +
                 ":21:Related Ref\r\n" +
@@ -2034,7 +2171,8 @@ namespace MT940ParserTests {
                 "-";
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var reader = new StreamReader(stream)) {
+            using (var reader = new StreamReader(stream))
+            {
                 var parser = new StatementParser(reader);
                 var statement = parser.ReadStatement();
 

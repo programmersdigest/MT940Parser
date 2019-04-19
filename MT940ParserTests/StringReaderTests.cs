@@ -2,20 +2,24 @@
 using programmersdigest.MT940Parser.Parsing;
 using System;
 
-namespace MT940ParserTests {
+namespace MT940ParserTests
+{
     [TestClass]
-    public class StringReaderTests {
+    public class StringReaderTests
+    {
         #region Ctor
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void StringReader_Ctor_BufferIsNull_ShouldThrowArgumentNullException() {
+        public void StringReader_Ctor_BufferIsNull_ShouldThrowArgumentNullException()
+        {
             string buffer = null;
             var reader = new StringReader(buffer);
         }
 
         [TestMethod]
-        public void StringReader_Ctor_BufferIsEmpty_ShouldInitialize() {
+        public void StringReader_Ctor_BufferIsEmpty_ShouldInitialize()
+        {
             var buffer = "";
             var reader = new StringReader(buffer);
 
@@ -27,7 +31,8 @@ namespace MT940ParserTests {
         #region Skip()
 
         [TestMethod]
-        public void StringReader_Skip_BufferIsEmpty_ShouldSkipToEnd() {
+        public void StringReader_Skip_BufferIsEmpty_ShouldSkipToEnd()
+        {
             var buffer = "";
             var reader = new StringReader(buffer);
 
@@ -38,7 +43,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Skip_BufferHasMoreChars_ShouldSkipGivenNumberOfChars() {
+        public void StringReader_Skip_BufferHasMoreChars_ShouldSkipGivenNumberOfChars()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -49,7 +55,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Skip_SkipOverEndOfBuffer_ShouldSkipToEnd() {
+        public void StringReader_Skip_SkipOverEndOfBuffer_ShouldSkipToEnd()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -60,7 +67,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Skip_Negative_ShouldSkipGivenNumberOfChars() {
+        public void StringReader_Skip_Negative_ShouldSkipGivenNumberOfChars()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
             reader.Skip(5);
@@ -72,7 +80,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Skip_NegativeBeforeBeginning_ShouldSkipToBeginning() {
+        public void StringReader_Skip_NegativeBeforeBeginning_ShouldSkipToBeginning()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
             reader.Skip(5);
@@ -88,7 +97,8 @@ namespace MT940ParserTests {
         #region Peek()
 
         [TestMethod]
-        public void StringReader_Peek_NoParam_ShouldReturnWholeBuffer() {
+        public void StringReader_Peek_NoParam_ShouldReturnWholeBuffer()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -98,7 +108,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Peek_NoParam_MiddleOfBuffer_ShouldReturnRestOfBuffer() {
+        public void StringReader_Peek_NoParam_MiddleOfBuffer_ShouldReturnRestOfBuffer()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
             reader.Skip(5);
@@ -109,7 +120,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Peek_NoParam_ShouldNotMovePosition() {
+        public void StringReader_Peek_NoParam_ShouldNotMovePosition()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -123,17 +135,19 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Peek_Param_ShouldPeekGivenNumOfChars() {
+        public void StringReader_Peek_Param_ShouldPeekGivenNumOfChars()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
             var value = reader.Peek(5);
-            
+
             Assert.AreEqual("12345", value);
         }
 
         [TestMethod]
-        public void StringReader_Peek_Param_MiddleOfBuffer_ShouldPeekGivenNumOfChars() {
+        public void StringReader_Peek_Param_MiddleOfBuffer_ShouldPeekGivenNumOfChars()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
             reader.Skip(3);
@@ -144,7 +158,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Peek_ParamOverLengthOfBuffer_ShouldPeekToEndOfBuffer() {
+        public void StringReader_Peek_ParamOverLengthOfBuffer_ShouldPeekToEndOfBuffer()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -155,7 +170,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void StringReader_Peek_NegativeParam_ShouldThrowArgumentOutOfRangeException() {
+        public void StringReader_Peek_NegativeParam_ShouldThrowArgumentOutOfRangeException()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
             reader.Skip(10);
@@ -164,7 +180,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Peek_ParamZero_ShouldBehaveLikeNoParam() {
+        public void StringReader_Peek_ParamZero_ShouldBehaveLikeNoParam()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -174,11 +191,12 @@ namespace MT940ParserTests {
         }
 
         #endregion
-        
+
         #region Read()
 
         [TestMethod]
-        public void StringReader_Read_NoParam_ShouldReturnWholeBuffer() {
+        public void StringReader_Read_NoParam_ShouldReturnWholeBuffer()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -188,7 +206,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Read_NoParam_MiddleOfBuffer_ShouldReturnRestOfBuffer() {
+        public void StringReader_Read_NoParam_MiddleOfBuffer_ShouldReturnRestOfBuffer()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
             reader.Skip(5);
@@ -199,19 +218,21 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Read_NoParam_ShouldMovePosition() {
+        public void StringReader_Read_NoParam_ShouldMovePosition()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
             reader.Read(3);
             reader.Read(3);
             var value = reader.Read(3);
-            
+
             Assert.AreEqual("789", value);
         }
 
         [TestMethod]
-        public void StringReader_Read_Param_ShouldReturnGivenNumOfChars() {
+        public void StringReader_Read_Param_ShouldReturnGivenNumOfChars()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -221,7 +242,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Read_Param_MiddleOfBuffer_ShouldReturnGivenNumOfChars() {
+        public void StringReader_Read_Param_MiddleOfBuffer_ShouldReturnGivenNumOfChars()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
             reader.Skip(3);
@@ -232,7 +254,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Read_ParamOverLengthOfBuffer_ShouldReturnAllToEndOfBuffer() {
+        public void StringReader_Read_ParamOverLengthOfBuffer_ShouldReturnAllToEndOfBuffer()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -243,7 +266,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void StringReader_Read_NegativeParam_ShouldThrowArgumentOutOfRangeException() {
+        public void StringReader_Read_NegativeParam_ShouldThrowArgumentOutOfRangeException()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
             reader.Skip(10);
@@ -252,7 +276,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_Read_ParamZero_ShouldBehaveLikeNoParam() {
+        public void StringReader_Read_ParamZero_ShouldBehaveLikeNoParam()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -262,12 +287,13 @@ namespace MT940ParserTests {
         }
 
         #endregion
-        
+
         #region ReadWhile()
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void StringReader_ReadWhile_PredicateIsNull_ShouldThrowArgumentNullException() {
+        public void StringReader_ReadWhile_PredicateIsNull_ShouldThrowArgumentNullException()
+        {
             var buffer = "12345abcde";
             var reader = new StringReader(buffer);
 
@@ -275,7 +301,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_ReadWhile_PredicateNoLength_ShouldReturnAllMatchingChars() {
+        public void StringReader_ReadWhile_PredicateNoLength_ShouldReturnAllMatchingChars()
+        {
             var buffer = "12345abcde";
             var reader = new StringReader(buffer);
 
@@ -285,7 +312,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_ReadWhile_PredicateNoLength_MiddleOfBuffer_ShouldReturnRestOfBuffer() {
+        public void StringReader_ReadWhile_PredicateNoLength_MiddleOfBuffer_ShouldReturnRestOfBuffer()
+        {
             var buffer = "12345abcde";
             var reader = new StringReader(buffer);
             reader.Skip(3);
@@ -296,7 +324,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_ReadWhile_PredicateNoLength_ShouldMovePosition() {
+        public void StringReader_ReadWhile_PredicateNoLength_ShouldMovePosition()
+        {
             var buffer = "123abc456def";
             var reader = new StringReader(buffer);
 
@@ -308,7 +337,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_ReadWhile_PredicateAndLength_ShouldReturnGivenNumOfChars() {
+        public void StringReader_ReadWhile_PredicateAndLength_ShouldReturnGivenNumOfChars()
+        {
             var buffer = "12345abcde";
             var reader = new StringReader(buffer);
 
@@ -318,7 +348,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_ReadWhile_PredicateAndLength_MiddleOfBuffer_ShouldReturnGivenNumOfChars() {
+        public void StringReader_ReadWhile_PredicateAndLength_MiddleOfBuffer_ShouldReturnGivenNumOfChars()
+        {
             var buffer = "12345abcde";
             var reader = new StringReader(buffer);
             reader.Skip(3);
@@ -329,7 +360,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_ReadWhile_PredicateAndLength_OverLengthOfBuffer_ShouldReturnAllToEndOfBuffer() {
+        public void StringReader_ReadWhile_PredicateAndLength_OverLengthOfBuffer_ShouldReturnAllToEndOfBuffer()
+        {
             var buffer = "1234567890";
             var reader = new StringReader(buffer);
 
@@ -340,7 +372,8 @@ namespace MT940ParserTests {
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void StringReader_ReadWhile_NegativeLength_ShouldThrowArgumentOutOfRangeException() {
+        public void StringReader_ReadWhile_NegativeLength_ShouldThrowArgumentOutOfRangeException()
+        {
             var buffer = "12345abcde";
             var reader = new StringReader(buffer);
             reader.Skip(10);
@@ -349,7 +382,8 @@ namespace MT940ParserTests {
         }
 
         [TestMethod]
-        public void StringReader_ReadWhile_LengthZero_ShouldBehaveLikeNoParam() {
+        public void StringReader_ReadWhile_LengthZero_ShouldBehaveLikeNoParam()
+        {
             var buffer = "12345abcde";
             var reader = new StringReader(buffer);
 
