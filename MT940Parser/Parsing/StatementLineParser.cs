@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
 namespace programmersdigest.MT940Parser.Parsing {
     public class StatementLineParser {
         private StringReader _reader;
+        private readonly List<string> _validTransactionTypes = new List<string>{"N","S","F"};
 
         public StatementLine ReadStatementLine(string buffer) {
             _reader = new StringReader(buffer);
@@ -113,8 +115,9 @@ namespace programmersdigest.MT940Parser.Parsing {
 
         private void ReadTransactionTypeIdCode(ref StatementLine statementLine) {
             var constant = _reader.Read(1);
-            if (constant != "N") {
-                throw new InvalidDataException("The statement line contained unexpected data. Expected constant \"N\" before \"Transaction Type ID Code\".");
+
+            if (!(_validTransactionTypes.Contains(constant))) {
+                throw new InvalidDataException("The statement line contained unexpected data. Expected constant \"N, S Or F\" before \"Transaction Type ID Code\".");
             }
 
             // TODO Make enum with values from "DFÜ - Abkommen S. 436"
