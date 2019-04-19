@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace programmersdigest.MT940Parser.Parsing {
@@ -140,6 +141,37 @@ namespace programmersdigest.MT940Parser.Parsing {
             ReadSeparator(ref information);
         }
 
+        private bool IsFieldCode(string value)
+        {
+            switch (value)
+            {
+                case "00":
+                case "10":
+                case "20":
+                case "21":
+                case "22":
+                case "23":
+                case "24":
+                case "25":
+                case "26":
+                case "27":
+                case "28":
+                case "29":
+                case "60":
+                case "61":
+                case "62":
+                case "63":
+                case "30":
+                case "31":
+                case "32":
+                case "33":
+                case "34":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         private void ReadNameOfPayer(ref Information information) {
             information.NameOfPayer += ReadValue();
         }
@@ -150,7 +182,23 @@ namespace programmersdigest.MT940Parser.Parsing {
         }
 
         private string ReadValue() {
-            return _reader.ReadWhile(c => c != _separator);
+            var result = new StringBuilder();
+            bool foundFieldCode = false;
+
+            do
+            {
+                var readString = _reader.ReadWhile(c => c != _separator);
+                result.Append(readString);
+
+                var nextChars = _reader.Peek(3);
+                foundFieldCode = nextChars.Length < 3 || IsFieldCode(nextChars.Substring(1));
+                if (!foundFieldCode)
+                {
+                    result.Append(_reader.Read(1));
+                }
+            } while (!foundFieldCode);
+
+            return result.ToString();
         }
 
         private void ReadRemittanceInformation(ref Information information) {
