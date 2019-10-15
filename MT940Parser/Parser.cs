@@ -5,27 +5,28 @@ using System.IO;
 
 namespace programmersdigest.MT940Parser
 {
-    public class Parser : IDisposable
+    public class Parser
     {
-        private StreamReader _reader;
-        private StatementParser _statementParser;
+        private string _path = null;
+        private Stream _stream = null;
 
         public Parser(string path)
         {
-            _reader = new StreamReader(path);
-            _statementParser = new StatementParser(_reader);
+            _path = path;
         }
 
         public Parser(Stream stream)
         {
-            _reader = new StreamReader(stream);
-            _statementParser = new StatementParser(_reader);
+            _stream = stream;
         }
 
         public IEnumerable<Statement> Parse()
         {
+            using StreamReader _reader = (_stream == null) ? new StreamReader(_path) : new StreamReader(_stream);
             while (!_reader.EndOfStream)
             {
+                StatementParser _statementParser = new StatementParser(_reader);
+
                 var statement = _statementParser.ReadStatement();
 
                 if (statement != null)
@@ -35,9 +36,5 @@ namespace programmersdigest.MT940Parser
             }
         }
 
-        public void Dispose()
-        {
-            _reader?.Dispose();
-        }
     }
 }

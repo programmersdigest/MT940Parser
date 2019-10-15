@@ -25,7 +25,8 @@ namespace programmersdigest.MT940Parser.Parsing
         {
             var statement = new Statement();
 
-            _reader.Find("\r\n:20:");
+            //_reader.Find("\r\n:20:"); - :20: can be the first line in the file
+            _reader.Find(":20:");
             if (_reader.EndOfStream)
             {
                 return null;
@@ -69,7 +70,7 @@ namespace programmersdigest.MT940Parser.Parsing
 
         private void ReadAccountIdentification(ref Statement statement)
         {
-            var value = _reader.ReadTo(out var nextKey, "\r\n:28C:");
+            var value = _reader.ReadTo(out var nextKey, "\r\n:28C:", "\r\n:28:"); // added :28:
             if (nextKey == null)
             {
                 throw new InvalidDataException("The statement data ended unexpectedly. Expected field :25: to be followed by :28C:");
@@ -235,6 +236,9 @@ namespace programmersdigest.MT940Parser.Parsing
         private void ReadClosingAvailableBalance(ref Statement statement)
         {
             var value = _reader.ReadTo(out var nextKey, "\r\n:65:", "\r\n:86:", "\r\n-");
+            // Statement can end w/ o '-'; In my case it was only one statement in the file and ended with EOF
+            if (_reader.EndOfStream) return;
+
             switch (nextKey)
             {
                 case "\r\n:65:":

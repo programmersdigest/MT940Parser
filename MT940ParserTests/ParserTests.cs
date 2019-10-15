@@ -17,13 +17,10 @@ namespace MT940ParserTests
         {
             var text = "";
 
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var parser = new Parser(stream))
-            {
-                var statements = parser.Parse();
-
-                Assert.AreEqual(0, statements.Count());
-            }
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(text));
+            var parser = new Parser(stream);
+            var statements = parser.Parse();
+            Assert.AreEqual(0, statements.Count());
         }
 
         [TestMethod]
@@ -31,13 +28,10 @@ namespace MT940ParserTests
         {
             var text = "32u1mbß61zßv";
 
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var parser = new Parser(stream))
-            {
-                var statements = parser.Parse();
-
-                Assert.AreEqual(0, statements.Count());
-            }
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(text));
+            var parser = new Parser(stream);
+            var statements = parser.Parse();
+            Assert.AreEqual(0, statements.Count());
         }
 
         [TestMethod]
@@ -46,9 +40,8 @@ namespace MT940ParserTests
         {
             Stream stream = null;
 
-            using (var parser = new Parser(stream))
-            {
-            }
+            var parser = new Parser(stream);
+
         }
 
         [TestMethod]
@@ -56,10 +49,7 @@ namespace MT940ParserTests
         public void Parser_PathIsNull_ShouldThrowArgumentNullException()
         {
             string path = null;
-
-            using (var parser = new Parser(path))
-            {
-            }
+            var parser = new Parser(path);
         }
 
         [TestMethod]
@@ -67,10 +57,7 @@ namespace MT940ParserTests
         public void Parser_PathIsEmpty_ShouldThrowArgumentNullException()
         {
             var path = "";
-
-            using (var parser = new Parser(path))
-            {
-            }
+            var parser = new Parser(path);
         }
 
         #endregion
@@ -99,13 +86,13 @@ namespace MT940ParserTests
                 ":86:Information\r\n" +
                 "-\r\n";
 
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var parser = new Parser(stream))
-            {
-                var statements = parser.Parse();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(text));
+            var parser = new Parser(stream);
 
-                Assert.AreEqual(1, statements.Count());
-            }
+            var statements = parser.Parse();
+
+            Assert.AreEqual(1, statements.Count());
+
         }
 
         [TestMethod]
@@ -131,13 +118,10 @@ namespace MT940ParserTests
                 "-\r\n";
             text = string.Concat(text, text, text, text, text);     // Generate five statement.
 
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(text)))
-            using (var parser = new Parser(stream))
-            {
-                var statements = parser.Parse();
-
-                Assert.AreEqual(5, statements.Count());
-            }
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(text));
+            var parser = new Parser(stream);
+            var statements = parser.Parse();
+            Assert.AreEqual(5, statements.Count());
         }
 
         #endregion
